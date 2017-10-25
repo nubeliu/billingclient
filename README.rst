@@ -1,7 +1,7 @@
 Python SDK for Nubeliu Billing API
 ==========================================
 
-:version: 0.1
+:version: 1.0
 
 
 billingclient
