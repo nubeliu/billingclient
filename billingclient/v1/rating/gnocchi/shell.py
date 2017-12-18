@@ -44,10 +44,13 @@ def do_rating_metric_rule_set_list(cc, args={}):
     try:
         metric_rule_sets = cc.gnocchi.metric_rule_sets.list()
     except exc.HTTPNotFound:
-        raise exc.CommandError('Metric rule sets not found: %s' % args.counter_name)
+        raise exc.CommandError('Metric rule sets not found: %s' %
+                               args.counter_name)
     else:
-        field_labels = ['Gnocchi Metric', 'Aggregation Function', 'Gnocchi Unit', 'Billing Unit', 'Id']
-        fields = ['gnocchi_metric', 'aggregation_function', 'gnocchi_unit', 'billing_unit', 'id']
+        field_labels = ['Gnocchi Metric', 'Aggregation Function',
+                        'Gnocchi Unit', 'Billing Unit', 'Id']
+        fields = ['gnocchi_metric', 'aggregation_function', 'gnocchi_unit',
+                  'billing_unit', 'id']
         utils.print_list(metric_rule_sets, fields, field_labels,
                          sortby=0)
 
@@ -58,10 +61,12 @@ def do_rating_metric_rule_set_list(cc, args={}):
 def do_rating_metric_rule_set_get(cc, args={}):
     """Get a metric rule set."""
     try:
-        metric_rule_set = cc.gnocchi.metric_rule_sets.get(metric_rule_set_id=args.id)
+        metric_rule_set = cc.gnocchi.metric_rule_sets.get(
+            metric_rule_set_id=args.id)
         utils.print_dict(metric_rule_set.to_dict())
     except exc.HTTPNotFound:
-        raise exc.CommandError('Metric rule set not found: %s' % args.counter_name)
+        raise exc.CommandError('Metric rule set not found: %s' %
+                               args.counter_name)
 
 
 @utils.arg('-s', '--id',
@@ -72,7 +77,8 @@ def do_rating_metric_rule_set_delete(cc, args={}):
     try:
         cc.gnocchi.metric_rule_sets.delete(metric_rule_set_id=args.id)
     except exc.HTTPNotFound:
-        raise exc.CommandError('Metric rule set not found: %s' % args.counter_name)
+        raise exc.CommandError('Metric rule set not found: %s' %
+                               args.counter_name)
 
 
 @utils.arg('-n', '--name',
@@ -102,7 +108,8 @@ def do_rating_metadata_rule_set_create(cc, args={}):
 def do_rating_metadata_rule_set_get(cc, args={}):
     """Get a metadata rule set."""
     try:
-        metadata_rule_set = cc.gnocchi.metadata_rule_sets.get(metadata_rule_set_id=args.id)
+        metadata_rule_set = cc.gnocchi.metadata_rule_sets.get(
+            metadata_rule_set_id=args.id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Metadata rule set not found: %s' % args.id)
     utils.print_dict(metadata_rule_set.to_dict())
@@ -114,9 +121,11 @@ def do_rating_metadata_rule_set_get(cc, args={}):
 def do_rating_metadata_rule_set_list(cc, args={}):
     """List metadata rule sets."""
     try:
-        created_metadata_rule_set = cc.gnocchi.metadata_rule_sets.list(metric_rule_set_id=args.metric_rule_set_id)
+        created_metadata_rule_set = cc.gnocchi.metadata_rule_sets.list(
+            metric_rule_set_id=args.metric_rule_set_id)
     except exc.HTTPNotFound:
-        raise exc.CommandError('Metadata rule sets not found: %s' % args.counter_name)
+        raise exc.CommandError('Metadata rule sets not found: %s' %
+                               args.counter_name)
     else:
         field_labels = ['Id', 'Name', 'Metadata rule set id']
         fields = ['id', 'name', 'metric_rule_set_id']
@@ -132,7 +141,8 @@ def do_rating_metadata_rule_set_delete(cc, args={}):
     try:
         cc.gnocchi.metadata_rule_sets.delete(id=args.id)
     except exc.HTTPNotFound:
-        raise exc.CommandError('Metadata rule set not found: %s' % args.counter_name)
+        raise exc.CommandError('Metadata rule set not found: %s' %
+                               args.counter_name)
 
 
 @utils.arg('-c', '--cost',
@@ -298,7 +308,8 @@ def do_rating_mapping_update(cc, args={}):
     try:
         metadata_rule = cc.gnocchi.metadata_rules.get(id=args.id)
     except exc.HTTPNotFound:
-        raise exc.CommandError('Metadata rule not found: %s' % args.counter_name)
+        raise exc.CommandError('Metadata rule not found: %s' %
+                               args.counter_name)
     for k, v in vars(args).items():
         if k in arg_to_field_mapping:
             if v is not None:
@@ -317,7 +328,8 @@ def do_rating_metric_rule_list(cc, args={}):
     if args.metric_rule_set_id is None:
         raise exc.CommandError("Provide metric-rule-set-id")
     try:
-        metric_rules = cc.gnocchi.metric_rules.list(metric_rule_set_id=args.metric_rule_set_id)
+        metric_rules = cc.gnocchi.metric_rules.list(
+            metric_rule_set_id=args.metric_rule_set_id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Metric rule not found: %s' % args.counter_name)
     else:
@@ -337,9 +349,11 @@ def do_rating_metadata_rule_list(cc, args={}):
     if args.metadata_rule_set_id is None:
         raise exc.CommandError("Provide metadata-rule-set-id")
     try:
-        metadata_rules = cc.gnocchi.metadata_rules.list(metadata_rule_set_id=args.metadata_rule_set_id)
+        metadata_rules = cc.gnocchi.metadata_rules.list(
+            metadata_rule_set_id=args.metadata_rule_set_id)
     except exc.HTTPNotFound:
-        raise exc.CommandError('Metadata rule not found: %s' % args.counter_name)
+        raise exc.CommandError('Metadata rule not found: %s' %
+                               args.counter_name)
     else:
         field_labels = ['Id', 'Value', 'Display name',
                         'Cost', 'Type', 'Metadata rule set id',
@@ -487,9 +501,11 @@ def do_rating_threshold_rule_list(cc, args={}):
     if args.metric_rule_set_id is None:
         raise exc.CommandError("Provide metric-rule-set-id")
     try:
-        threshold_rules = cc.gnocchi.threshold_rules.list(metric_rule_set_id=args.metric_rule_set_id)
+        threshold_rules = cc.gnocchi.threshold_rules.list(
+            metric_rule_set_id=args.metric_rule_set_id)
     except exc.HTTPNotFound:
-        raise exc.CommandError('Threshold rule not found: %s' % args.counter_name)
+        raise exc.CommandError('Threshold rule not found: %s' %
+                               args.counter_name)
     else:
         field_labels = ['Id', 'Level', 'Cost', 'Type',
                         'Metric rule set id', 'Valid Since',
@@ -516,7 +532,8 @@ def do_rating_threshold_rule_delete(cc, args={}):
 def do_rating_threshold_rule_get(cc, args={}):
     """Get a threshold rule."""
     try:
-        threshold_rule = cc.gnocchi.threshold_rules.get(threshold_rule_id=args.id)
+        threshold_rule = cc.gnocchi.threshold_rules.get(
+            threshold_rule_id=args.id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Threshold rule not found: %s' % args.id)
     utils.print_dict(threshold_rule.to_dict())

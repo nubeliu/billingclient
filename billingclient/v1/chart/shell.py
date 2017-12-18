@@ -1,17 +1,18 @@
 # NubeliU Billing SDK
 # @autor: Sergio Colinas
 import textwrap
-from billingclient import exc
+
 from billingclient.common import utils
+from billingclient import exc
 
 
 def do_chart_definition_list(cc, args):
     data = cc.charts.mappings.list()
     fields = ['id', 'gnocchi_metric', 'name', 'description', 'granularities',
-              'time_range_start', 'time_range_end', 'group_by', 'show_measures',
-              'show_cost', 'billing_user', 'function', 'reaggregation',
-              'chart_type', 'chart_width', 'chart_height', 'chart_x',
-              'chart_y', 'is_in_use', 'hidden']
+              'time_range_start', 'time_range_end', 'group_by',
+              'show_measures', 'show_cost', 'billing_user', 'function',
+              'reaggregation', 'chart_type', 'chart_width', 'chart_height',
+              'chart_x', 'chart_y', 'is_in_use', 'hidden']
     fields_labels = ['Id', 'Metric', 'Name', 'Description', 'Granularities',
                      'Time Range Start', 'Time Range End', 'Group By',
                      'Show Measures', 'Show Cost', 'Billing User', 'Function',
@@ -41,7 +42,7 @@ def do_chart_definition_get(cc, args):
     data_dict = data.to_dict()
     filters = data_dict["filters"] if data_dict["filters"] else ""
     data_dict["filters"] = "\n"
-    for chunk in [filters[i:i+80] for i in range(0, len(filters), 80)]:
+    for chunk in [filters[i: i + 80] for i in range(0, len(filters), 80)]:
         data_dict["filters"] += chunk + "\n"
     utils.print_dict(data_dict)
 
@@ -113,13 +114,16 @@ def do_chart_definition_create(cc, args):
         time_range_end=args.time_range_end,
         group_by=args.group_by, function=args.function,
         reaggregation=args.reaggregation,
-        show_measures="true" in args.show_measures.lower() or "1" in args.show_measures,
+        show_measures=("true" in args.show_measures.lower() or "1" in
+                       args.show_measures),
         show_cost="true" in args.show_cost.lower() or "1" in args.show_cost,
         unit=args.unit, filters=args.filters, chart_type=args.chart_type,
-        billing_user=True if args.billing_user and (args.billing_user.lower() == 'true' or args.billing_user.lower() == '1') else False)
+        billing_user=(True if args.billing_user and (
+            args.billing_user.lower() == 'true' or args.billing_user.lower()
+            == '1') else False))
     data_dict = out.to_dict()
     filters = data_dict["filters"] if data_dict["filters"] else ''
-    for chunk in [filters[i:i+80] for i in range(0, len(filters), 80)]:
+    for chunk in [filters[i: i + 80] for i in range(0, len(filters), 80)]:
         data_dict["filters"] += chunk + "\n"
     if data_dict["filters"]:
         data_dict["filters"] = data_dict["filters"][:-1]
@@ -148,7 +152,8 @@ def do_chart_definition_create(cc, args):
            help='List of charts pos_y to include in the dashboard.',
            required=False)
 @utils.arg('--billing-user',
-           help='Indicates that the dashboard will be available for billing_user.',
+           help='Indicates that the dashboard will be available for '
+                'billing_user.',
            required=False)
 @utils.arg('--is-default',
            help='Indicates that the dashboard will be the default dashboard.',
@@ -158,8 +163,12 @@ def do_dashboard_definition_create(cc, args):
         name=args.name, description=args.description, charts=args.charts,
         charts_width=args.charts_width, charts_height=args.charts_height,
         charts_x=args.charts_x, charts_y=args.charts_y,
-        billing_user=True if args.billing_user and (args.billing_user.lower() == 'true' or args.billing_user.lower() == '1') else False,
-        is_default=True if args.is_default and (args.is_default.lower() == 'true' or args.is_default.lower() == '1') else False)
+        billing_user=(True if args.billing_user and (
+            args.billing_user.lower() == 'true' or args.billing_user.lower()
+            == '1') else False),
+        is_default=(True if args.is_default and
+                    (args.is_default.lower() == 'true' or
+                     args.is_default.lower() == '1') else False))
     data_dict = out.to_dict()
     utils.print_dict(data_dict)
 
@@ -247,7 +256,8 @@ def do_chart_definition_update(cc, args={}):
     try:
         mapping = cc.charts.mappings.get(definition_id=args.id)
     except exc.HTTPNotFound:
-        raise exc.CommandError('Chart definition not found: %s' % args.counter_name)
+        raise exc.CommandError('Chart definition not found: %s' %
+                               args.counter_name)
     for k, v in vars(args).items():
         if k in arg_to_field_mapping:
             if v is not None:
@@ -301,7 +311,8 @@ def do_chart_definition_update(cc, args={}):
            help='List of charts pos_y to include in the dashboard.',
            required=False)
 @utils.arg('--billing-user',
-           help='Indicates that the dashboard will be available for billing_user.',
+           help='Indicates that the dashboard will be available for '
+                'billing_user.',
            required=False)
 @utils.arg('--is-default',
            help='Indicates that the dashboard will be the default dashboard.',
@@ -323,7 +334,8 @@ def do_dashboard_definition_update(cc, args={}):
     try:
         mapping = cc.charts.dashboards.get(definition_id=args.id)
     except exc.HTTPNotFound:
-        raise exc.CommandError('Dashboard definition not found: %s' % args.counter_name)
+        raise exc.CommandError('Dashboard definition not found: %s' %
+                               args.counter_name)
     for k, v in vars(args).items():
         if k in arg_to_field_mapping:
             if v is not None:
@@ -335,10 +347,14 @@ def do_dashboard_definition_update(cc, args={}):
                     setattr(mapping, k, v)
     data_dict = cc.charts.dashboards.update(
         id=mapping.dirty_fields["id"], name=mapping.dirty_fields["name"],
-        charts=mapping.dirty_fields["charts"], charts_width=mapping.dirty_fields["charts_width"],
-        charts_height=mapping.dirty_fields["charts_height"], charts_x=mapping.dirty_fields["charts_x"],
-        charts_y=mapping.dirty_fields["charts_y"], description=mapping.dirty_fields["description"],
-        billing_user=mapping.dirty_fields["billing_user"], is_default=mapping.dirty_fields["is_default"]).to_dict()
+        charts=mapping.dirty_fields["charts"],
+        charts_width=mapping.dirty_fields["charts_width"],
+        charts_height=mapping.dirty_fields["charts_height"],
+        charts_x=mapping.dirty_fields["charts_x"],
+        charts_y=mapping.dirty_fields["charts_y"],
+        description=mapping.dirty_fields["description"],
+        billing_user=mapping.dirty_fields["billing_user"],
+        is_default=mapping.dirty_fields["is_default"]).to_dict()
     utils.print_dict(data_dict)
 
 
@@ -347,7 +363,10 @@ def _granularity_formatter(list):
 
 
 def _filters_formatter(dict):
-    return lambda o: '\n'.join(['\n'.join(textwrap.wrap(str(item["filter"]).replace('_id', '') + ": " + ', '.join(dict["display_name"] for dict in item["values"]), 80)) for item in o[dict]])
+    return lambda o: '\n'.join(['\n'.join(textwrap.wrap(
+        str(item["filter"]).replace('_id', '') + ": " + ', '.join(
+            dict["display_name"] for dict in item["values"]), 80))
+        for item in o[dict]])
 
 
 def _dict_formatter(field):
@@ -368,31 +387,38 @@ def _print_chart_definition_measures(data):
         for key, val in group.iteritems():
             if key != 'measures':
                 print(key + ": " + str(val["display_name"]))
-        if len(group["measures"]) > 0  and "value" in group["measures"][0] and "cost" in group["measures"][0]:
+        if (len(group["measures"]) > 0 and "value" in group["measures"][0]
+                and "cost" in group["measures"][0]):
             fields = ['timestamp', 'value', 'cost', 'granularity']
             fields_labels = ['Timestamp', 'Value', 'Cost', 'Granularity']
-            utils.print_list(group["measures"], fields, fields_labels,
-                             formatters={"timestamp": _dict_formatter("timestamp"),
-                                         "value": _dict_formatter("value"),
-                                         "cost": _dict_formatter("cost"),
-                                         "granularity": _dict_formatter("granularity")},
-                             sortby=0)
-        elif len(group["measures"]) > 0  and "value" in group["measures"][0]:
+            utils.print_list(
+                group["measures"], fields, fields_labels,
+                formatters={
+                    "timestamp": _dict_formatter("timestamp"),
+                    "value": _dict_formatter("value"),
+                    "cost": _dict_formatter("cost"),
+                    "granularity": _dict_formatter("granularity")},
+                sortby=0)
+        elif len(group["measures"]) > 0 and "value" in group["measures"][0]:
             fields = ['timestamp', 'value', 'granularity']
             fields_labels = ['Timestamp', 'Value', 'Granularity']
-            utils.print_list(group["measures"], fields, fields_labels,
-                             formatters={"timestamp": _dict_formatter("timestamp"),
-                                         "value": _dict_formatter("value"),
-                                         "granularity": _dict_formatter("granularity")},
-                             sortby=0)
+            utils.print_list(
+                group["measures"], fields, fields_labels,
+                formatters={
+                    "timestamp": _dict_formatter("timestamp"),
+                    "value": _dict_formatter("value"),
+                    "granularity": _dict_formatter("granularity")},
+                sortby=0)
         else:
             fields = ['timestamp', 'cost', 'granularity']
             fields_labels = ['Timestamp', 'Cost', 'Granularity']
-            utils.print_list(group["measures"], fields, fields_labels,
-                             formatters={"timestamp": _dict_formatter("timestamp"),
-                                         "cost": _dict_formatter("cost"),
-                                         "granularity": _dict_formatter("granularity")},
-                             sortby=0)
+            utils.print_list(
+                group["measures"], fields, fields_labels,
+                formatters={
+                    "timestamp": _dict_formatter("timestamp"),
+                    "cost": _dict_formatter("cost"),
+                    "granularity": _dict_formatter("granularity")},
+                sortby=0)
 
 
 def _print_dashboard_definition_measures(data):
@@ -474,7 +500,8 @@ def do_chart_definition_measures_preview(cc, args):
         description=args.description, granularities=args.granularities,
         time_range_start=args.time_range_start,
         time_range_end=args.time_range_end, group_by=args.group_by,
-        show_measures="true" in args.show_measures.lower() or "1" in args.show_measures,
+        show_measures=("true" in args.show_measures.lower() or "1" in
+                       args.show_measures),
         show_cost="true" in args.show_cost.lower() or "1" in args.show_cost,
         function=args.function, reaggregation=args.reaggregation,
         unit=args.unit, filters=args.filters, granularity=args.granularity)
@@ -514,7 +541,8 @@ def do_chart_definition_measures_preview(cc, args):
 def do_dashboard_definition_measures_preview(cc, args):
     data = cc.charts.dashboard_measures.preview(
         name=args.name, charts=args.charts, description=args.description,
-        granularities=args.granularities, time_range_start=args.time_range_start,
+        granularities=args.granularities,
+        time_range_start=args.time_range_start,
         time_range_end=args.time_range_end, group_by=args.group_by,
         filters=args.filters, granularity=args.granularity,
         page_number=args.page_number)

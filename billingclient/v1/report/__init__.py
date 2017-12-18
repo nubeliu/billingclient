@@ -4,6 +4,7 @@ import urllib
 
 from billingclient.common import base
 
+
 class ReportResult(base.Resource):
 
     key = 'report'
@@ -34,13 +35,15 @@ class ReportManager(base.Manager):
             url += "?%s" % ('&'.join(filters))
         return self.client.get(url).json()
 
-    def get_aws_ri_coverage(self, account_id=None, secret_access_key=None, u_domain_id=None):
+    def get_aws_ri_coverage(self, account_id=None, secret_access_key=None,
+                            u_domain_id=None):
         url = self.base_url + "/aws_ri_coverage"
         params = list()
         if account_id:
             params.append("account_id=%s" % account_id)
         if secret_access_key:
-            params.append("secret_access_key=%s" % urllib.quote(secret_access_key, safe=''))
+            params.append("secret_access_key=%s" %
+                          urllib.quote(secret_access_key, safe=''))
         if u_domain_id:
             params.append("u_domain_id=%s" % u_domain_id)
             url += "?%s" % ('&'.join(params))

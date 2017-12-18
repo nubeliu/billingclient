@@ -216,7 +216,10 @@ def granularity_formatter(list):
 
 
 def filters_formatter(dict):
-    return lambda o: '\n'.join(['\n'.join(textwrap.wrap(str(item["filter"]).replace('_id', '') + ": " + ', '.join(dict["display_name"] for dict in item["values"]), 80)) for item in o[dict]])
+    return lambda o: '\n'.join(['\n'.join(textwrap.wrap(
+        str(item["filter"]).replace('_id', '') + ": " + ', '.join(
+            dict["display_name"] for dict in item["values"]), 80))
+        for item in o[dict]])
 
 
 def dict_formatter(field):
@@ -237,31 +240,35 @@ def _print_metric_definition_measures(data):
         for key, val in group.iteritems():
             if key != 'measures':
                 print(key + ": " + str(val["display_name"]))
-        if len(group["measures"]) > 0  and "value" in group["measures"][0] and "cost" in group["measures"][0]:
+        if (len(group["measures"]) > 0 and "value" in group["measures"][0]
+                and "cost" in group["measures"][0]):
             fields = ['timestamp', 'value', 'cost', 'granularity']
             fields_labels = ['Timestamp', 'Value', 'Cost', 'Granularity']
             print_list(group["measures"], fields, fields_labels,
-                             formatters={"timestamp": dict_formatter("timestamp"),
-                                         "value": dict_formatter("value"),
-                                         "cost": dict_formatter("cost"),
-                                         "granularity": dict_formatter("granularity")},
-                             sortby=0)
-        elif len(group["measures"]) > 0  and "value" in group["measures"][0]:
+                       formatters={
+                           "timestamp": dict_formatter("timestamp"),
+                           "value": dict_formatter("value"),
+                           "cost": dict_formatter("cost"),
+                           "granularity": dict_formatter("granularity")},
+                       sortby=0)
+        elif len(group["measures"]) > 0 and "value" in group["measures"][0]:
             fields = ['timestamp', 'value', 'granularity']
             fields_labels = ['Timestamp', 'Value', 'Granularity']
             print_list(group["measures"], fields, fields_labels,
-                             formatters={"timestamp": dict_formatter("timestamp"),
-                                         "value": dict_formatter("value"),
-                                         "granularity": dict_formatter("granularity")},
-                             sortby=0)
+                       formatters={
+                           "timestamp": dict_formatter("timestamp"),
+                           "value": dict_formatter("value"),
+                           "granularity": dict_formatter("granularity")},
+                       sortby=0)
         else:
             fields = ['timestamp', 'cost', 'granularity']
             fields_labels = ['Timestamp', 'Cost', 'Granularity']
             print_list(group["measures"], fields, fields_labels,
-                             formatters={"timestamp": dict_formatter("timestamp"),
-                                         "cost": dict_formatter("cost"),
-                                         "granularity": dict_formatter("granularity")},
-                             sortby=0)
+                       formatters={
+                           "timestamp": dict_formatter("timestamp"),
+                           "cost": dict_formatter("cost"),
+                           "granularity": dict_formatter("granularity")},
+                       sortby=0)
 
 
 def print_report_definition_measures(data):

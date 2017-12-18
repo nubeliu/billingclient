@@ -12,5 +12,6 @@ class ChartManager(base.Manager):
         self.mappings = definition.ChartDefinitionManager(http_client)
         self.measures = definition.ChartDefinitionMeasuresManager(http_client)
         self.dashboards = definition.DashboardDefinitionManager(http_client)
-        self.dashboard_measures = definition.DashboardDefinitionMeasuresManager(http_client)
+        self.dashboard_measures = (
+            definition.DashboardDefinitionMeasuresManager(http_client))
         super(ChartManager, self).__init__(http_client)

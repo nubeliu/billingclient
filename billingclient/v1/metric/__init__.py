@@ -12,7 +12,8 @@ class MetricManager(base.Manager):
         self.mappings = definition.MetricDefinitionManager(http_client)
         self.measures = definition.MetricDefinitionMeasuresManager(http_client)
         self.reports = definition.ReportDefinitionManager(http_client)
-        self.report_measures = definition.ReportDefinitionMeasuresManager(http_client)
+        self.report_measures = definition.ReportDefinitionMeasuresManager(
+            http_client)
         super(MetricManager, self).__init__(http_client)
 
     def list_available_metrics(self, gnocchi_metric=None, refresh=False):

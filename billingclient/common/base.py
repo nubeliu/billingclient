@@ -19,8 +19,8 @@ Base utilities to build API operation managers and objects on top of.
 """
 
 import copy
+import urllib
 
-from urllib import quote
 from six.moves.urllib import parse
 
 from billingclient import exc
@@ -108,9 +108,9 @@ class CrudManager(base.CrudManager):
         for key, value in kwargs.iteritems():
             if key != '%s_id' % self.key:
                 if "?" in url:
-                    url += "&" + key + "=" + quote(value)
+                    url += "&" + key + "=" + urllib.quote(value)
                 else:
-                    url += "?" + key + "=" + quote(value)
+                    url += "?" + key + "=" + urllib.quote(value)
         return self._get(url)
 
     def create(self, **kwargs):
