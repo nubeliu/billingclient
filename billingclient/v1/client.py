@@ -9,6 +9,7 @@ from billingclient.v1 import core
 from billingclient.v1 import metric
 from billingclient.v1.rating.gnocchi import client as rating_client
 from billingclient.v1 import report
+from billingclient.v1 import widget
 
 SUBMODULES_NAMESPACE = 'billing.client.modules'
 
@@ -48,6 +49,7 @@ class Client(object):
         self.rating = rating_client.Client(self.http_client)
         self.metrics = metric.MetricManager(self.http_client)
         self.reports = report.ReportManager(self.http_client)
+        self.widgets = widget.WidgetManager(self.http_client)
         self.quotations = core.QuotationManager(self.http_client)
         self._expose_submodules()
 

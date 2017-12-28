@@ -14,6 +14,9 @@ class MetricManager(base.Manager):
         self.reports = definition.ReportDefinitionManager(http_client)
         self.report_measures = definition.ReportDefinitionMeasuresManager(
             http_client)
+        self.widgets = definition.WidgetDefinitionManager(http_client)
+        self.widget_measures = definition.WidgetDefinitionMeasuresManager(
+            http_client)
         super(MetricManager, self).__init__(http_client)
 
     def list_available_metrics(self, gnocchi_metric=None, refresh=False):

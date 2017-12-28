@@ -28,6 +28,7 @@ from billingclient.openstack.common import cliutils
 from billingclient.v1.chart import shell as chart_shell
 from billingclient.v1.metric import shell as metric_shell
 from billingclient.v1.report import shell as report_shell
+from billingclient.v1.widget import shell as widget_shell
 
 SUBMODULES_NAMESPACE = 'billing.client.modules'
 
@@ -117,6 +118,7 @@ class BillingShell(object):
         self._find_actions(subparsers, chart_shell)
         self._find_actions(subparsers, metric_shell)
         self._find_actions(subparsers, report_shell)
+        self._find_actions(subparsers, widget_shell)
         extensions = extension.ExtensionManager(
             SUBMODULES_NAMESPACE,
         )

@@ -279,3 +279,13 @@ def print_report_definition_measures(data):
     print("Report updated at: " + str(data.updated_at))
     for group in data.to_dict()["report_metrics"]:
         _print_metric_definition_measures(group)
+
+
+def print_widget_definition_measures(data):
+    print("Widget name: " + str(data.name))
+    print("Widget description: " + str(data.description))
+    print("Widget group by: " + str(data.group_by))
+    print("Widget items per page: " + str(data.items_per_page))
+    print("Widget updated at: " + str(data.updated_at))
+    for group in data.to_dict()["widget_metrics"]:
+        _print_metric_definition_measures(group)

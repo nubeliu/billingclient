@@ -19,6 +19,14 @@ class Report(base.Resource):
         return "<Report %s>" % self._info
 
 
+class Widget(base.Resource):
+
+    key = 'widgets'
+
+    def __repr__(self):
+        return "<Widget %s>" % self._info
+
+
 class Measure(base.Resource):
 
     key = 'definition'
@@ -41,6 +49,13 @@ class ReportDefinitionManager(base.CrudManager):
     collection_key = "definitions"
 
 
+class WidgetDefinitionManager(base.CrudManager):
+    resource_class = Widget
+    base_url = "/v1/widget"
+    key = "definition"
+    collection_key = "definitions"
+
+
 class MetricDefinitionMeasuresManager(base.CrudManager):
     resource_class = Measure
     base_url = "/v1/metric"
@@ -51,5 +66,12 @@ class MetricDefinitionMeasuresManager(base.CrudManager):
 class ReportDefinitionMeasuresManager(base.CrudManager):
     resource_class = Measure
     base_url = "/v1/report"
+    key = "definition"
+    collection_key = "measures"
+
+
+class WidgetDefinitionMeasuresManager(base.CrudManager):
+    resource_class = Measure
+    base_url = "/v1/widget"
     key = "definition"
     collection_key = "measures"
