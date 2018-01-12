@@ -50,7 +50,6 @@ class Client(object):
         self.metrics = metric.MetricManager(self.http_client)
         self.reports = report.ReportManager(self.http_client)
         self.widgets = widget.WidgetManager(self.http_client)
-        self.quotations = core.QuotationManager(self.http_client)
         self._expose_submodules()
 
     def _expose_submodules(self):

@@ -14,6 +14,3 @@ class WidgetResult(base.Resource):
 class WidgetManager(base.Manager):
 
     base_url = "/v1/widget"
-
-    def list_tenants(self):
-        return self.client.get(self.base_url + "/tenants").json()

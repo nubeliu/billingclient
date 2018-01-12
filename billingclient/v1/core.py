@@ -23,29 +23,20 @@ class BillingModule(base.Resource):
 class BillingModuleManager(base.CrudManager):
     resource_class = BillingModule
     base_url = "/v1/rating"
-    key = 'module'
-    collection_key = "modules"
+    key = 'state'
 
+    def is_enabled(self):
+        return self.client.get(self.base_url + "/state/is_enabled").json()
 
-class Collector(base.Resource):
+    def set_status(self, enabled):
+        return self.client.post(self.base_url + "/state/set_status?enabled=" +
+                                str(enabled)).json()
 
-    key = 'collector'
+    def get_last_processed_timestamp(self):
+        return self.client.get(self.base_url +
+                               "/state/get_last_processed_timestamp").json()
 
-    def __repr__(self):
-        return "<Collector %s>" % self._info
-
-
-class CollectorManager(base.Manager):
-    resource_class = Collector
-    base_url = "/v1/rating"
-    key = "collector"
-    collection_key = "collectors"
-
-
-class QuotationManager(base.Manager):
-    base_url = "/v1/rating/quote"
-
-    def quote(self, resources):
-        out = self.api.post(self.base_url,
-                            json={'resources': resources}).json()
-        return out
+    def recalculate_since(self, timestamp):
+        return self.client.post(self.base_url +
+                                "/state/recalculate_since?timestamp=" +
+                                timestamp).json()
