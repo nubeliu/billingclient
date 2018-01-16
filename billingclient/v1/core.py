@@ -30,7 +30,7 @@ class BillingStatusManager(base.CrudManager):
 
     def set_status(self, enabled):
         return self.client.post(self.base_url + "/status/set_status?enabled=" +
-                                str(enabled)).json()
+                                ("true" if enabled else ""))
 
     def get_last_processed_timestamp(self):
         return self.client.get(self.base_url +
