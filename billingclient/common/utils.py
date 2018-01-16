@@ -231,15 +231,15 @@ def _print_metric_definition_measures(data):
         data_dict = data
     else:
         data_dict = data.to_dict()
-    print("Metric name: " + str(data_dict["name"]))
-    print("Metric description: " + str(data_dict["description"]))
-    print("Metric unit: " + str(data_dict["unit"]))
-    print("Metric has measures: " + str(data_dict["has_measures"]))
-    print("Metric has cost: " + str(data_dict["has_cost"]))
+    print("Metric name: " + unicode(data_dict["name"]))
+    print("Metric description: " + unicode(data_dict["description"]))
+    print("Metric unit: " + unicode(data_dict["unit"]))
+    print("Metric has measures: " + unicode(data_dict["has_measures"]))
+    print("Metric has cost: " + unicode(data_dict["has_cost"]))
     for group in data_dict["definition_measures"]:
         for key, val in group.iteritems():
             if key != 'measures':
-                print(key + ": " + str(val["display_name"]))
+                print(key + ": " + unicode(val["display_name"]))
         if (len(group["measures"]) > 0 and "value" in group["measures"][0]
                 and "cost" in group["measures"][0]):
             fields = ['timestamp', 'value', 'cost', 'granularity']
@@ -272,20 +272,20 @@ def _print_metric_definition_measures(data):
 
 
 def print_report_definition_measures(data):
-    print("Report name: " + str(data.name))
-    print("Report description: " + str(data.description))
-    print("Report group by: " + str(data.group_by))
-    print("Report items per page: " + str(data.items_per_page))
-    print("Report updated at: " + str(data.updated_at))
+    print("Report name: " + unicode(data.name))
+    print("Report description: " + unicode(data.description))
+    print("Report group by: " + unicode(data.group_by))
+    print("Report items per page: " + unicode(data.items_per_page))
+    print("Report updated at: " + unicode(data.updated_at))
     for group in data.to_dict()["report_metrics"]:
         _print_metric_definition_measures(group)
 
 
 def print_widget_definition_measures(data):
-    print("Widget name: " + str(data.name))
-    print("Widget description: " + str(data.description))
-    print("Widget group by: " + str(data.group_by))
-    print("Widget items per page: " + str(data.items_per_page))
-    print("Widget updated at: " + str(data.updated_at))
+    print("Widget name: " + unicode(data.name))
+    print("Widget description: " + unicode(data.description))
+    print("Widget group by: " + unicode(data.group_by))
+    print("Widget items per page: " + unicode(data.items_per_page))
+    print("Widget updated at: " + unicode(data.updated_at))
     for group in data.to_dict()["widget_metrics"]:
         _print_metric_definition_measures(group)

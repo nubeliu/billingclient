@@ -378,15 +378,15 @@ def _print_chart_definition_measures(data):
         data_dict = data
     else:
         data_dict = data.to_dict()
-    print("Chart name: " + str(data_dict["name"]))
-    print("Chart description: " + str(data_dict["description"]))
-    print("Chart unit: " + str(data_dict["unit"]))
-    print("Chart has measures: " + str(data_dict["has_measures"]))
-    print("Chart has cost: " + str(data_dict["has_cost"]))
+    print("Chart name: " + unicode(data_dict["name"]))
+    print("Chart description: " + unicode(data_dict["description"]))
+    print("Chart unit: " + unicode(data_dict["unit"]))
+    print("Chart has measures: " + unicode(data_dict["has_measures"]))
+    print("Chart has cost: " + unicode(data_dict["has_cost"]))
     for group in data_dict["definition_measures"]:
         for key, val in group.iteritems():
             if key != 'measures':
-                print(key + ": " + str(val["display_name"]))
+                print(key + ": " + unicode(val["display_name"]))
         if (len(group["measures"]) > 0 and "value" in group["measures"][0]
                 and "cost" in group["measures"][0]):
             fields = ['timestamp', 'value', 'cost', 'granularity']
@@ -422,25 +422,33 @@ def _print_chart_definition_measures(data):
 
 
 def _print_dashboard_definition_measures(data):
-    print("Dashboard name: " + str(data.name))
-    print("Dashboard description: " + str(data.description))
+    print("Dashboard name: " + unicode(data.name))
+    print("Dashboard description: " + unicode(data.description))
     for group in data.to_dict()["dashboard_charts"]:
         _print_chart_definition_measures(group)
 
 
 @utils.arg('--id',
-           help='Chart definition Id to get measures.',
+           help='Id of the chart to get measures.',
            required=True)
 @utils.arg('--granularity',
-           help='Granularity to get measures.',
+           help='Granularity to get (returns the finer by default).',
            required=False)
 @utils.arg('--groupby',
-           help='Grouping to get measures.',
+           help='Grouping option to get (returns the first by default).',
+           required=False)
+@utils.arg('--page-number',
+           help='Number of the page to get (default 1).',
+           required=False)
+@utils.arg('--items-per-page',
+           help='Items per page (default 1000).',
            required=False)
 def do_chart_definition_measures_get(cc, args):
     data = cc.charts.measures.get(definition_id=args.id,
                                   granularity=args.granularity,
-                                  groupby=args.groupby)
+                                  groupby=args.groupby,
+                                  page_number=args.page_number,
+                                  items_per_page=args.items_per_page)
     _print_chart_definition_measures(data)
 
 

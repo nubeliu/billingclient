@@ -44,7 +44,7 @@ class Client(object):
         )
 
         self.http_client = client.BaseClient(self.client)
-        self.modules = core.BillingModuleManager(self.http_client)
+        self.status = core.BillingStatusManager(self.http_client)
         self.charts = chart.ChartManager(self.http_client)
         self.rating = rating_client.Client(self.http_client)
         self.metrics = metric.MetricManager(self.http_client)
