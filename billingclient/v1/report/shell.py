@@ -173,11 +173,19 @@ def do_report_definition_update(cc, args={}):
 @utils.arg('--items-per-page',
            help='Items per page.',
            required=False)
+@utils.arg('--filter-domain-id',
+           help='Domain id to filter.',
+           required=False)
+@utils.arg('--filter-project-id',
+           help='Project id to filter.',
+           required=False)
 def do_report_definition_measures_get(cc, args):
     data = cc.metrics.report_measures.get(definition_id=args.id,
                                           granularity=args.granularity,
                                           page_number=args.page_number,
-                                          items_per_page=args.items_per_page)
+                                          items_per_page=args.items_per_page,
+                                          domain_id=args.filter_domain_id,
+                                          project_id=args.filter_project_id)
     utils.print_report_definition_measures(data)
 
 

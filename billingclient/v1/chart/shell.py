@@ -443,12 +443,20 @@ def _print_dashboard_definition_measures(data):
 @utils.arg('--items-per-page',
            help='Items per page (default 1000).',
            required=False)
+@utils.arg('--filter-domain-id',
+           help='Domain id to filter.',
+           required=False)
+@utils.arg('--filter-project-id',
+           help='Project id to filter.',
+           required=False)
 def do_chart_definition_measures_get(cc, args):
     data = cc.charts.measures.get(definition_id=args.id,
                                   granularity=args.granularity,
                                   groupby=args.groupby,
                                   page_number=args.page_number,
-                                  items_per_page=args.items_per_page)
+                                  items_per_page=args.items_per_page,
+                                  domain_id=args.filter_domain_id,
+                                  project_id=args.filter_project_id)
     _print_chart_definition_measures(data)
 
 
