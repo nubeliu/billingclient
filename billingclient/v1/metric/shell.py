@@ -128,15 +128,19 @@ def do_metric_definition_update(cc, args={}):
 @utils.arg('--gnocchi-metric',
            help='Metric to get info.',
            required=False)
+@utils.arg('--refresh',
+           help='Force refresh cache.',
+           required=False)
 def do_metric_available_list(cc, args):
     data = cc.metrics.list_available_metrics(
-        gnocchi_metric=args.gnocchi_metric)
-    fields = ['metric', 'unit', 'has_cost', 'function', 'granularities',
-              'timespans', 'filters']
-    fields_labels = ['Metric', 'Unit', 'Has Cost', 'Function', 'Granularities',
-                     'Timespans', 'Filters']
+        gnocchi_metric=args.gnocchi_metric, refresh=args.refresh)
+    fields = ['metric', 'gnocchi_unit', 'unit', 'has_cost', 'function',
+              'granularities', 'timespans', 'filters']
+    fields_labels = ['Metric', 'Gnocchi Unit', 'Unit', 'Has Cost', 'Function',
+                     'Granularities', 'Timespans', 'Filters']
     utils.print_list(data["metrics"], fields, fields_labels, formatters={
         "metric": utils.dict_formatter("metric"),
+        "gnocchi_unit": utils.dict_formatter("gnocchi_unit"),
         "unit": utils.dict_formatter("unit"),
         "has_cost": utils.dict_formatter("has_cost"),
         "function": utils.dict_formatter("function"),
