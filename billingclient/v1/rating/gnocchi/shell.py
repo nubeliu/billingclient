@@ -139,7 +139,7 @@ def do_rating_metadata_rule_set_list(cc, args={}):
 def do_rating_metadata_rule_set_delete(cc, args={}):
     """Delete a metadata rule set."""
     try:
-        cc.gnocchi.metadata_rule_sets.delete(id=args.id)
+        cc.gnocchi.metadata_rule_sets.delete(metadata_rule_set_id=args.id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Metadata rule set not found: %s' %
                                args.counter_name)
@@ -393,7 +393,7 @@ def do_rating_metadata_rule_get(cc, args={}):
 def do_rating_metric_rule_delete(cc, args={}):
     """Delete a metric rule."""
     try:
-        cc.gnocchi.metric_rules.delete(id=args.id)
+        cc.gnocchi.metric_rules.delete(metric_rule_id=args.id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Metric rule not found: %s' % args.id)
 
@@ -404,7 +404,7 @@ def do_rating_metric_rule_delete(cc, args={}):
 def do_rating_metadata_rule_delete(cc, args={}):
     """Delete a metadata rule."""
     try:
-        cc.gnocchi.metadata_rules.delete(id=args.id)
+        cc.gnocchi.metadata_rules.delete(metadata_rule_id=args.id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Metadata rule not found: %s' % args.id)
 
@@ -521,7 +521,7 @@ def do_rating_threshold_rule_list(cc, args={}):
 def do_rating_threshold_rule_delete(cc, args={}):
     """Delete a threshold rule."""
     try:
-        cc.gnocchi.threshold_rules.delete(id=args.id)
+        cc.gnocchi.threshold_rules.delete(threshold_rule_id=args.id)
     except exc.HTTPNotFound:
         raise exc.CommandError('Threshold rule not found: %s' % args.id)
 
